@@ -14,7 +14,7 @@ function Sidebar() {
     return (
         <aside className="sideBar">
             <div className="logo">
-                <img src={logo} alt="VProCure Logo" />
+                <img src={"#"} alt="HM LTD" />
             </div>
             <nav className="menu">
                 <ul>
@@ -30,8 +30,8 @@ function Sidebar() {
                 </ul>
             </nav>
             <footer>
-                <p>© VProCURE</p>
-                <p><span>Powered By</span> VProCURE</p>
+                <p>© HM LTD</p>
+                <p><span>Powered By</span>HM LTD</p>
             </footer>
         </aside>
     );

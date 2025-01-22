@@ -41,6 +41,8 @@ import Birthdays from "./Components/Birthdays";
 import EmployeeChart from "./Components/EmployeeChart";
 import Footer from "./Components/Footer";
 
+import ApiFetch from "./Components/ApiFetch";
+
 function App(){
   return(
     <div className="dashboardContainer">
@@ -59,5 +61,16 @@ function App(){
     </div>
   );
 }
+
+
+// function App(){
+//   return(
+//     <>
+//       <div>
+//         <ApiFetch/>
+//       </div>
+//     </>
+//   )
+// }
 
 export default App
