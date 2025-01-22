@@ -1,8 +1,8 @@
 function Footer() {
     return (
         <footer>
-            <p>© VProCURE</p>
-            <p><span>Powered By</span> VProCURE</p>
+            <p>© HM LTD</p>
+            <p><span>Powered By</span> HM LTD</p>
         </footer>
     );
 }
