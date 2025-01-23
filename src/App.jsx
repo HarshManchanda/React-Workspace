@@ -42,6 +42,7 @@ import EmployeeChart from "./Components/EmployeeChart";
 import Footer from "./Components/Footer";
 
 import ApiFetch from "./Components/ApiFetch";
+import Login from "./auth/Login";
 
 function App(){
   return(
@@ -62,6 +63,14 @@ function App(){
   );
 }
 
+
+// function App(){
+//   return(
+//     <>
+//       <Login/>
+//     </>
+//   )
+// }
 
 // function App(){
 //   return(

@@ -589,6 +589,115 @@ button .fa-solid{
     display: none;
 }
 
+
+
+/* Container styling */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+  }
+  
+  /* Form container styling */
+  .login-form-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Heading styling */
+  .login-heading {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+  
+  /* Error message styling */
+  .login-error {
+    color: red;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  /* Form group styling */
+  .login-form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Label styling */
+  .login-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #555;
+    font-weight: bold;
+  }
+  
+  /* Input styling */
+  .login-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  /* Button styling */
+  .login-button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #007BFF;
+    color: #fff;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-button:hover {
+    background-color: #0056b3;
+  }
+
+  /* Logout container styling */
+.logout-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+  }
+  
+  .logout-heading {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  /* Logout button styling */
+  .logout-button {
+    padding: 0.75rem 1.5rem;
+    background-color: #dc3545;
+    color: #fff;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .logout-button:hover {
+    background-color: #c82333;
+  }
+  
+
 @media only screen and (max-width:1199px) {
     .dashboardContainer {
         -webkit-box-orient: vertical;
@@ -736,6 +845,5 @@ button .fa-solid{
     .employeeDistribution {
         width: 100%;
     }
-    
 
 }

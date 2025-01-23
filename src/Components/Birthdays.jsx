@@ -12,7 +12,7 @@ function Birthdays() {
 
     const FRAPPE_API_KEY = import.meta.env.VITE_REACT_APP_API_KEY;
     const FRAPPE_API_SECRET = import.meta.env.VITE_REACT_APP_API_SECRET;
-    const BASE_URL = import.meta.env.VITE_REACT_BASE_URL;
+    const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
     useEffect(() => {
         const fetchData = async () => {
