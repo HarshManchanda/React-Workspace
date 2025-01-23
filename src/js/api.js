@@ -1,7 +1,7 @@
 // api.js
 import axios from "axios";
 
-const BASE_URL = "http://49.50.93.228/api/resource/Employee";
+const BASE_URL = import.meta.env.VITE_REACT_BASE_URL;
 
 export const fetchEmployees = async (fields = ["name", "status","date_of_birth","date_of_joining","date_of_retirement"], limit = 10000, token) => {
     const config = {

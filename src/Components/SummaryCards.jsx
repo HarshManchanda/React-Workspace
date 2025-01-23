@@ -14,13 +14,17 @@ function SummaryCards() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const FRAPPE_API_KEY = import.meta.env.VITE_REACT_APP_API_KEY;
+    const FRAPPE_API_SECRET = import.meta.env.VITE_REACT_APP_API_SECRET;
+    const BASE_URL = import.meta.env.VITE_REACT_BASE_URL;
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const data = await fetchEmployees(
                     ["name", "status","employee_name","first_name","last_name", "date_of_birth", "date_of_joining", "date_of_retirement"],
                     10000,
-                    "34a3b2e819f61e7:5bc3528fb8db525"
+                    `${FRAPPE_API_KEY}:${FRAPPE_API_SECRET}`
                 );
                 setEmployees(data);
 
@@ -80,10 +84,17 @@ function SummaryCards() {
 
         fetchData();
     }, []); // Empty dependency array ensures it runs only once on mount.
+
+    // Function to generate authenticated URLs
+    const generateAuthenticatedURL = (path, filters) => {
+        const queryString = new URLSearchParams(filters).toString();
+        return `${BASE_URL}${path}?${queryString}&api_key=${FRAPPE_API_KEY}&api_secret=${FRAPPE_API_SECRET}`;
+    };
   
     return (
         <section className="summaryRow">
             <div className="summaryCol">
+            <a href="#" target="_blank" rel="noopener noreferrer">
                 <div className="summaryCard">
                     <div className="summaryIcon"><img src={employee} alt="Employees" /></div>
                     <div className="summaryDetail">
@@ -91,20 +102,21 @@ function SummaryCards() {
                         <p>{activeCount}</p> {/* Replace with actual data */}
                     </div>
                 </div>
+            </a>
             </div>
-            <div class="summaryCol">
-                <div class="summaryCard yellowCard">
-                    <div class="summaryIcon"><img src={new_hire} alt=""/></div>
-                    <div class="summaryDetail">
+            <div className="summaryCol">
+                <div className="summaryCard yellowCard">
+                    <div className="summaryIcon"><img src={new_hire} alt=""/></div>
+                    <div className="summaryDetail">
                         <h3>New Hires (This Year)</h3>
                         <p>{newHiresThisMonth}</p>
                     </div>
                 </div>
             </div>
-            <div class="summaryCol">
-                <div class="summaryCard purpleCard">
-                    <div class="summaryIcon"><img src={retirements} alt=""/></div>
-                    <div class="summaryDetail">
+            <div className="summaryCol">
+                <div className="summaryCard purpleCard">
+                    <div className="summaryIcon"><img src={retirements} alt=""/></div>
+                    <div className="summaryDetail">
                         <h3>Retirements</h3>
                         <p>{retirementsThisMonth}</p>
                     </div>
