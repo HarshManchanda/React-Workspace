@@ -43,22 +43,75 @@ import Footer from "./Components/Footer";
 
 import ApiFetch from "./Components/ApiFetch";
 import Login from "./auth/Login";
+import React, { useState } from "react";
 
-function App(){
-  return(
-    <div className="dashboardContainer">
-        <Sidebar/>
-        <main className="content">
-            <Header/>
+// function App(){
+//   return(
+//     <div className="dashboardContainer">
+//         <Sidebar/>
+//         <main className="content">
+//             <Header/>
+//             <div className="innerContent">
+//                 <SummaryCards />
+//                 <section className="dashboardContent">
+//                     <Birthdays/>
+//                     <EmployeeChart/>
+//                 </section>
+//             </div>
+//             <Footer/>
+//         </main>
+//     </div>
+//   );
+// }
+
+function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true); // Set login state to true after successful login
+  };
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://49.50.93.228/api/method/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        setIsLoggedIn(false); // Reset login state
+        console.log("Logged out successfully.");
+      } else {
+        console.error("Logout failed.");
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  };
+
+  return (
+    <div>
+      {isLoggedIn ? (
+        <div className="dashboardContainer">
+          <Sidebar />
+          <main className="content">
+            <Header />
             <div className="innerContent">
-                <SummaryCards />
-                <section className="dashboardContent">
-                    <Birthdays/>
-                    <EmployeeChart/>
-                </section>
+              <SummaryCards />
+              <section className="dashboardContent">
+                <Birthdays />
+                <EmployeeChart />
+              </section>
             </div>
-            <Footer/>
-        </main>
+            <Footer />
+          </main>
+          <button className="logout-button" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
+      ) : (
+        <Login onLoginSuccess={handleLoginSuccess} />
+      )}
     </div>
   );
 }
