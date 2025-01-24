@@ -1,39 +1,3 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
-
-// function App() {
-//   const [count, setCount] = useState(0)
-
-//   return (
-//     <>
-//       <div>
-//         <a href="https://vite.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://react.dev" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React</h1>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-//         <p>
-//           Edit <code>src/App.jsx</code> and save to test HMR
-//         </p>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite and React logos to learn more
-//       </p>
-//     </>
-//   )
-// }
-
-// export default App
-
 import Sidebar from "./Components/Sidebar"
 import Header from "./Components/Header"
 import SummaryCards from "./Components/SummaryCards";
@@ -65,24 +29,52 @@ import React, { useState } from "react";
 // }
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const URL = import.meta.env.VITE_REACT_APP_URL;
+
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    // Check local storage for persisted login state
+    return localStorage.getItem("isLoggedIn") === "true";
+  });
 
   const handleLoginSuccess = () => {
     setIsLoggedIn(true); // Set login state to true after successful login
+    localStorage.setItem("isLoggedIn", "true"); // Persist login state
   };
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://49.50.93.228/api/method/logout", {
-        method: "POST",
-        credentials: "include",
-      });
-
-      if (response.ok) {
-        setIsLoggedIn(false); // Reset login state
-        console.log("Logged out successfully.");
+      const cookies = document.cookie.split("; ").reduce((acc, cookie) => {
+        const [key, value] = cookie.split("=");
+        acc[key] = value;
+        return acc;
+      }, {});
+  
+      const sid = cookies.sid; // Retrieve the session ID from cookies
+  
+      if (sid) {
+        // Make an API call to ERPNext's logout endpoint with the session ID
+        const response = await fetch(`${URL}api/method/logout?sid=${sid}`, {
+          method: "GET", // Since you're passing SID in the URL, you might want to use GET method
+          credentials: "include", // Ensure cookies are included in the request
+        });
+  
+        if (response.ok) {
+          console.log("Server session terminated successfully.");
+  
+          // Clear the session cookie explicitly
+          document.cookie = "sid=; Path=/; Domain=49.50.93.228; Expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+          document.cookie = "sid=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+  
+          // Reset application state
+          setIsLoggedIn(false);
+          localStorage.removeItem("isLoggedIn");
+  
+          console.log("Logged out successfully and session cookie destroyed.");
+        } else {
+          console.error("Logout failed on the server.");
+        }
       } else {
-        console.error("Logout failed.");
+        console.error("Session ID not found.");
       }
     } catch (error) {
       console.error("Error during logout:", error);
@@ -93,7 +85,7 @@ function App() {
     <div>
       {isLoggedIn ? (
         <div className="dashboardContainer">
-          <Sidebar />
+          <Sidebar onLogout={handleLogout}/>
           <main className="content">
             <Header />
             <div className="innerContent">
@@ -105,9 +97,6 @@ function App() {
             </div>
             <Footer />
           </main>
-          <button className="logout-button" onClick={handleLogout}>
-            Logout
-          </button>
         </div>
       ) : (
         <Login onLoginSuccess={handleLoginSuccess} />

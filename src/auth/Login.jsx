@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+
 // import "./Login.css"; // Import the CSS file
 
 // function Login() {
+//     const URL = import.meta.env.VITE_REACT_APP_URL;
+
 //     const [email, setEmail] = useState("");
 //     const [password, setPassword] = useState("");
 //     const [error, setError] = useState("");
@@ -16,7 +19,7 @@ import React, { useState } from "react";
 //       }
   
 //       try {
-//         const response = await fetch("http://49.50.93.228/api/method/login", {
+//         const response = await fetch(`${URL}api/method/login`, {
 //           method: "POST",
 //           headers: {
 //               'Accept': 'application/json',
@@ -33,10 +36,11 @@ import React, { useState } from "react";
 //           const data = await response.json();
 //           const sid = data.sid;
 //           console.log("Login successful:", data);
-
+// // ${URL}${homePage}?sid=${sid}
 //           if(sid){
 //             const homePage = data.home_page || "/app";
-//             window.location.href = `http://49.50.93.228${homePage}?sid=${sid}`;
+//             const state_emp = "Active"
+//             window.location.href = `${URL}app/employee?status=${state_emp}&sid=${sid}`;
 //           }else {
 //             alert("Session ID not found in response. Login may not work as expected.");
 //           }
@@ -89,9 +93,12 @@ import React, { useState } from "react";
 //   }
   
 function Login({ onLoginSuccess }) {
+  const URL = import.meta.env.VITE_REACT_APP_URL;
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -102,8 +109,10 @@ function Login({ onLoginSuccess }) {
       return;
     }
 
+    setLoading(true); // Start loading
+
     try {
-      const response = await fetch("http://49.50.93.228/api/method/login", {
+      const response = await fetch(`${URL}api/method/login`, {
         method: "POST",
         headers: {
           "Accept": "application/json",
@@ -117,12 +126,24 @@ function Login({ onLoginSuccess }) {
         const data = await response.json();
         console.log("Login successful:", data);
 
-        // Notify parent component about login success
-        onLoginSuccess();
+        // Manually store the session ID from response (if not already set as a cookie)
+        const sessionId = data.sid || ""; // Adjust based on API response structure
+        if (sessionId) {
+          document.cookie = `sid=${sessionId}`;
+        }
+
+        // Simulate 1.5 seconds delay for loading screen
+        setTimeout(() => {
+          onLoginSuccess();
+          setLoading(false); // Stop loading after login success
+        }, 1500);
+
       } else {
+        setLoading(false); // Stop loading on failure
         alert("Login failed. Please check your credentials.");
       }
     } catch (err) {
+      setLoading(false); // Stop loading on error
       setError(err.message);
     }
   };
@@ -145,6 +166,7 @@ function Login({ onLoginSuccess }) {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               required
+              disabled={loading} // Disable input while loading
             />
           </div>
           <div className="login-form-group">
@@ -161,8 +183,16 @@ function Login({ onLoginSuccess }) {
               required
             />
           </div>
-          <button type="submit" className="login-button">
-            Login
+          <button
+            type="submit"
+            className="login-button"
+            disabled={loading} // Disable button while loading
+          >
+            {loading ? (
+              <span className="loading-spinner"></span> // Loading spinner
+            ) : (
+              "Login"
+            )}
           </button>
         </form>
       </div>

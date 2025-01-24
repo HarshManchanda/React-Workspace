@@ -17,6 +17,7 @@ function SummaryCards() {
     const FRAPPE_API_KEY = import.meta.env.VITE_REACT_APP_API_KEY;
     const FRAPPE_API_SECRET = import.meta.env.VITE_REACT_APP_API_SECRET;
     const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
+    const URL = import.meta.env.VITE_REACT_APP_URL;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -85,17 +86,40 @@ function SummaryCards() {
         fetchData();
     }, []); // Empty dependency array ensures it runs only once on mount.
 
-    // Function to generate authenticated URLs
-    const generateAuthenticatedURL = (path, filters) => {
-        const queryString = new URLSearchParams(filters).toString();
-        return `${BASE_URL}${path}?${queryString}&api_key=${FRAPPE_API_KEY}&api_secret=${FRAPPE_API_SECRET}`;
+    const handleCardClick = (filter, value) => {
+        const cookies = document.cookie.split("; ").reduce((acc, cookie) => {
+            const [key, value] = cookie.split("=");
+            acc[key] = value;
+            return acc;
+        }, {});
+
+        const sid = cookies.sid; // Retrieve the session ID from cookies
+
+        if (sid) {
+            let url = `${URL}app/employee?sid=${sid}`;
+    
+            // Handle filters
+            if (filter && value) {
+                if (filter === "date_of_joining" || filter === "date_of_retirement") {
+                    // Encode the special syntax for timespan
+                    url += `&status=Active&${filter}=${encodeURIComponent(JSON.stringify(["Timespan", value]))}`;
+                } else {
+                    url += `&${filter}=${encodeURIComponent(value)}`;
+                }
+            }
+    
+            window.open(url, "_blank"); // Open in a new tab
+        } else {
+            alert("Session ID not found. Please log in again.");
+        }
+
     };
   
     return (
         <section className="summaryRow">
             <div className="summaryCol">
-            <a href="#" target="_blank" rel="noopener noreferrer">
-                <div className="summaryCard">
+            <a target="_blank" rel="noopener noreferrer">
+                <div className="summaryCard" onClick={ () => handleCardClick("status","Active") }>
                     <div className="summaryIcon"><img src={employee} alt="Employees" /></div>
                     <div className="summaryDetail">
                         <h3>Employees Head Count <span className="badge active">Active</span></h3>
@@ -105,7 +129,7 @@ function SummaryCards() {
             </a>
             </div>
             <div className="summaryCol">
-                <div className="summaryCard yellowCard">
+                <div className="summaryCard yellowCard" onClick={() => handleCardClick("date_of_joining", "this month")}>
                     <div className="summaryIcon"><img src={new_hire} alt=""/></div>
                     <div className="summaryDetail">
                         <h3>New Hires (This Year)</h3>
@@ -114,7 +138,7 @@ function SummaryCards() {
                 </div>
             </div>
             <div className="summaryCol">
-                <div className="summaryCard purpleCard">
+                <div className="summaryCard purpleCard" onClick={() => handleCardClick("date_of_retirement", "this month")}>
                     <div className="summaryIcon"><img src={retirements} alt=""/></div>
                     <div className="summaryDetail">
                         <h3>Retirements</h3>
