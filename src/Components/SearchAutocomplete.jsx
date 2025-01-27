@@ -81,6 +81,9 @@ function SearchAutocomplete() {
 
     // Show results box when search input is focused
     const handleFocus = () => {
+        if (!input) {
+            setResults(keywords);
+        }
         setShowResults(true);
     };
 

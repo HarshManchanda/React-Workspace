@@ -74,6 +74,9 @@ function App() {
           console.error("Logout failed on the server.");
         }
       } else {
+        // Reset application state
+        setIsLoggedIn(false);
+        localStorage.removeItem("isLoggedIn");
         console.error("Session ID not found.");
       }
     } catch (error) {
