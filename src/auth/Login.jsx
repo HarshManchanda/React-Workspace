@@ -134,7 +134,7 @@ function Login({ onLoginSuccess }) {
 
         // Simulate 1.5 seconds delay for loading screen
         setTimeout(() => {
-          onLoginSuccess();
+          onLoginSuccess({ email });
           setLoading(false); // Stop loading after login success
         }, 1500);
 
@@ -199,7 +199,6 @@ function Login({ onLoginSuccess }) {
     </div>
   );
 }
-
 
 
 export default Login;

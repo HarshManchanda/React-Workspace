@@ -92,15 +92,17 @@ body {
 .sideBar {
     background: #000;
     width: 250px;
-    padding: 20px 30px 150px 20px;
+    padding: 20px 20px 0 20px; /* Remove bottom padding */
     max-height: 100vh;
     min-height: 100vh;
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Arrange items vertically */
 }
 
 .sideBar footer {
-    position: fixed;
-    bottom: 30px;
-    left: 20px;
+    margin-top: auto; /* Push the footer to the bottom */
+    padding: 20px 0; /* Add some padding for better spacing */
+    text-align: left; /* Align text in the footer */
 }
 
 .logo {
@@ -112,9 +114,9 @@ body {
 }
 
 nav.menu {
-    max-height: calc(100% - 30px);
-    overflow-y: auto;
-    margin: 30px 0 0;
+    overflow-y: auto; /* Allow scrolling for the menu */
+    flex: 1; /* Let the menu take up remaining space */
+    margin-bottom: 30px; /* Space below the menu for better visibility */
 }
 
 nav.menu::-webkit-scrollbar-track {
@@ -123,7 +125,7 @@ nav.menu::-webkit-scrollbar-track {
 }
 
 nav.menu::-webkit-scrollbar {
-    width: 4px;
+    width: 6px;
     background-color: transparent;
 }
 

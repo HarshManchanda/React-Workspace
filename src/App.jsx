@@ -31,14 +31,59 @@ import React, { useState } from "react";
 function App() {
   const URL = import.meta.env.VITE_REACT_APP_URL;
 
+  // const [isLoggedIn, setIsLoggedIn] = useState(() => {
+  //   // Check local storage for persisted login state
+  //   return localStorage.getItem("isLoggedIn") === "true";
+  // });
+
+  // const handleLoginSuccess = () => {
+  //   setIsLoggedIn(true); // Set login state to true after successful login
+  //   localStorage.setItem("isLoggedIn", "true"); // Persist login state
+  // };
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     // Check local storage for persisted login state
     return localStorage.getItem("isLoggedIn") === "true";
   });
+  const [userRoles, setUserRoles] = useState([]); // Store user roles here
 
-  const handleLoginSuccess = () => {
+  const handleLoginSuccess = async (userData) => {
     setIsLoggedIn(true); // Set login state to true after successful login
     localStorage.setItem("isLoggedIn", "true"); // Persist login state
+    await fetchUserRoles(userData.email); // Fetch roles after login
+    // console.log(userData.email)
+  };
+
+  const fetchUserRoles = async (email) => {
+    try {
+      const cookies = document.cookie.split("; ").reduce((acc, cookie) => {
+        const [key, value] = cookie.split("=");
+        acc[key] = value;
+        return acc;
+      }, {});
+  
+      const sid = cookies.sid; // Retrieve the session ID from cookies
+      console.log(sid)
+
+      const response = await fetch(`${URL}api/method/get_test_2`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // "cookie": `sid=${sid}`
+        },
+        body: JSON.stringify({user:email}),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // console.log(data.message.roles)
+        setUserRoles(data.message.roles); // Store the fetched roles
+        // console.log(userRoles)
+      } else {
+        console.error("Failed to fetch roles");
+      }
+    } catch (error) {
+      console.error("Error fetching roles:", error);
+    }
   };
 
   const handleLogout = async () => {
@@ -88,7 +133,7 @@ function App() {
     <div>
       {isLoggedIn ? (
         <div className="dashboardContainer">
-          <Sidebar onLogout={handleLogout}/>
+          <Sidebar onLogout={handleLogout} roles={userRoles}/>
           <main className="content">
             <Header />
             <div className="innerContent">
