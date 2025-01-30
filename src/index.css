@@ -432,84 +432,112 @@ button .fa-solid{
     cursor: pointer;
 }
 
-.summaryRow {
-    display: -webkit-box;
-    display: -ms-flexbox;
+
+/* HOME.JSX */
+/* HOME.JSX */
+.homeSummary {
     display: flex;
-    -ms-flex-wrap: wrap;
     flex-wrap: wrap;
     gap: 20px;
 }
 
+.blueCard {
+    background-image: linear-gradient(45deg, rgba(202, 218, 249, 0.489), rgba(223, 228, 251, 0.539));
+}
+
+.blueCard p {
+    color: #237fe9;
+}
+
+.greenCard {
+    background-image: linear-gradient(45deg, rgba(163, 231, 161, 0.667), rgba(217, 194, 240, 0.2));
+}
+
+.greenCard p {
+    color: #82b373;
+}
+
+/* END HOME.JSX */
+
+/* SUMMARY ROW AND COLUMNS */
+.summaryRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%; /* Ensure it takes full width */
+}
+
 .summaryCol {
-    width: calc(33.33% - 13.33px);
+    flex: 1 1 calc(33.33% - 13.33px); /* Flexible width with gap adjustment */
+    min-width: 250px; /* Minimum width to prevent squeezing on small screens */
     padding: 10px;
     border-radius: 8px;
-    border: solid 1px #E3E5E2;
+    border: solid 1px #e3e5e2;
     cursor: pointer;
+    box-sizing: border-box; /* Include padding in width calculation */
 }
 
 .summaryCard {
     width: 100%;
-    background-image: -o-linear-gradient(45deg, rgb(200 216 250 / 30%), rgb(224 230 247 / 30%));
-    background-image: linear-gradient(45deg, rgb(200 216 250 / 30%), rgb(224 230 247 / 30%));
+    background-image: linear-gradient(45deg, rgba(200, 216, 250, 0.3), rgba(224, 230, 247, 0.3));
     padding: 20px 10px;
     border-radius: 8px;
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     height: 100%;
+    box-sizing: border-box; /* Include padding in height calculation */
 }
 
 .summaryIcon {
     width: 60px;
+    flex-shrink: 0; /* Prevent the icon from shrinking */
 }
 
 .summaryDetail {
-    width: calc(100% - 60px);
+    flex: 1; /* Take up remaining space */
     padding-left: 20px;
+    position: relative; /* Ensure the badge is positioned relative to this container */
 }
 
 .summaryDetail h3 {
     margin: 0;
-    position: relative;
-    padding-right: 64px;
     font-size: 16px;
     line-height: 20px;
     text-transform: capitalize;
+    padding-right: 80px; /* Add padding to prevent text overlap with the badge */
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Add ellipsis for overflow text */
 }
 
 .summaryCard .badge.active {
-    background: #79C150;
+    background: #79c150;
     color: white;
-    padding: 0 5px 0 15px;
-    border-radius: 3px;
+    padding: 0 10px 0 25px; /* Adjust padding for better spacing */
+    border-radius: 12px; /* Rounded corners */
     font-size: 12px;
     line-height: 19px;
-    position: absolute;
-    right: 0;
-    margin: auto;
+    position: absolute; /* Position the badge absolutely within the h3 */
+    right: 0; /* Align to the right */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Center vertically */
     font-weight: 600;
-    top: 0;
-    bottom: 0;
-    height: -webkit-fit-content;
-    height: -moz-fit-content;
-    height: fit-content;
+    height: 24px; /* Fixed height for consistency */
+    display: flex;
+    align-items: center; /* Center text vertically */
+    justify-content: center; /* Center text horizontally */
+    white-space: nowrap; /* Prevent badge text from wrapping */
 }
 
 .summaryCard .badge::before {
     position: absolute;
     content: '';
-    width: 5px;
-    height: 5px;
-    background-color: #FFFFFF;
-    left: 5px;
-    top: 0;
-    bottom: 0;
-    margin: auto;
+    width: 8px; /* Slightly larger dot */
+    height: 8px; /* Slightly larger dot */
+    background-color: #ffffff;
+    left: 10px; /* Adjust position of the dot */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Center vertically */
     border-radius: 100%;
 }
 
@@ -518,26 +546,41 @@ button .fa-solid{
     font-size: 36px;
     line-height: 53px;
     font-weight: 700;
-    color: #2F4EA1;
+    color: #2f4ea1;
     font-family: "Oswald", serif;
 }
 
+.summaryDetail .homep {
+    font-size: 24px;
+}
+
 .yellowCard {
-    background-image: -o-linear-gradient(45deg, rgb(249 226 202 / 30%), rgb(251 239 223 / 30%));
-    background-image: linear-gradient(45deg, rgb(249 226 202 / 30%), rgb(251 239 223 / 30%));
+    background-image: linear-gradient(45deg, rgba(249, 226, 202, 0.3), rgba(251, 239, 223, 0.3));
 }
 
 .yellowCard p {
-    color: #E99E23;
+    color: #e99e23;
 }
 
 .purpleCard {
-    background-image: -o-linear-gradient(45deg, rgb(197 161 231 / 20%), rgb(217 194 240 / 20%));
-    background-image: linear-gradient(45deg, rgb(197 161 231 / 20%), rgb(217 194 240 / 20%));
+    background-image: linear-gradient(45deg, rgba(197, 161, 231, 0.2), rgba(217, 194, 240, 0.2));
 }
 
 .purpleCard p {
-    color: #9473B3;
+    color: #9473b3;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .summaryCol {
+        flex: 1 1 calc(50% - 20px); /* Two cards per row on tablets */
+    }
+}
+
+@media (max-width: 768px) {
+    .summaryCol {
+        flex: 1 1 100%; /* One card per row on mobile */
+    }
 }
 
 /* Dashboard Content Styles */

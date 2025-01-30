@@ -7,7 +7,8 @@ import Footer from "./Components/Footer";
 
 import ApiFetch from "./Components/ApiFetch";
 import Login from "./auth/Login";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Home from "./Components/Home";
 
 // function App(){
 //   return(
@@ -46,45 +47,56 @@ function App() {
   });
   const [userRoles, setUserRoles] = useState([]); // Store user roles here
 
+  const [loggedInUser, setLoggedInUser] = useState("");
+
   const handleLoginSuccess = async (userData) => {
     setIsLoggedIn(true); // Set login state to true after successful login
     localStorage.setItem("isLoggedIn", "true"); // Persist login state
+    setLoggedInUser(userData.email);
+    localStorage.setItem("loggedInUser", JSON.stringify(userData.email));
     await fetchUserRoles(userData.email); // Fetch roles after login
     // console.log(userData.email)
   };
 
   const fetchUserRoles = async (email) => {
     try {
-      const cookies = document.cookie.split("; ").reduce((acc, cookie) => {
-        const [key, value] = cookie.split("=");
-        acc[key] = value;
-        return acc;
-      }, {});
-  
-      const sid = cookies.sid; // Retrieve the session ID from cookies
-      console.log(sid)
+        const cookies = document.cookie.split("; ").reduce((acc, cookie) => {
+            const [key, value] = cookie.split("=");
+            acc[key] = value;
+            return acc;
+        }, {});
 
-      const response = await fetch(`${URL}api/method/get_test_2`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // "cookie": `sid=${sid}`
-        },
-        body: JSON.stringify({user:email}),
-      });
+        const sid = cookies.sid;
 
-      if (response.ok) {
-        const data = await response.json();
-        // console.log(data.message.roles)
-        setUserRoles(data.message.roles); // Store the fetched roles
-        // console.log(userRoles)
-      } else {
-        console.error("Failed to fetch roles");
+        if (!sid) return;
+
+        const response = await fetch(`${URL}api/method/get_test_2`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ user: email }),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            setUserRoles(data.message.roles); // Store in state
+            localStorage.setItem("userRoles", JSON.stringify(data.message.roles)); // Store in localStorage
+        } else {
+            console.error("Failed to fetch roles");
+          }
+      } catch (error) {
+          console.error("Error fetching roles:", error);
       }
-    } catch (error) {
-      console.error("Error fetching roles:", error);
-    }
   };
+
+  // Restore roles from localStorage on page reload
+  useEffect(() => {
+      const storedRoles = JSON.parse(localStorage.getItem("userRoles")) || [];
+      setUserRoles(storedRoles);
+      const storedUser = JSON.parse(localStorage.getItem("loggedInUser")) || "";
+    setLoggedInUser(storedUser); // Restore loggedInUser
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -128,20 +140,25 @@ function App() {
       console.error("Error during logout:", error);
     }
   };
+  // Check if the user has the HR User role
+  const isHRUser = userRoles.includes("HR User");
 
   return (
     <div>
       {isLoggedIn ? (
         <div className="dashboardContainer">
-          <Sidebar onLogout={handleLogout} roles={userRoles}/>
+          <Sidebar onLogout={handleLogout} roles={userRoles} />
           <main className="content">
             <Header />
             <div className="innerContent">
-              <SummaryCards />
-              <section className="dashboardContent">
-                <Birthdays />
-                <EmployeeChart />
-              </section>
+              <Home loggedInUser={loggedInUser} />
+              {/* Conditionally render Birthdays and EmployeeChart for HR Users */}
+              {isHRUser && (
+                <section className="dashboardContent">
+                  <Birthdays />
+                  <EmployeeChart />
+                </section>
+              )}
             </div>
             <Footer />
           </main>

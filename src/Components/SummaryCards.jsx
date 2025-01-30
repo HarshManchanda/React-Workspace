@@ -117,17 +117,7 @@ function SummaryCards() {
   
     return (
         <section className="summaryRow">
-            <div className="summaryCol">
-            <a target="_blank" rel="noopener noreferrer">
-                <div className="summaryCard" onClick={ () => handleCardClick("status","Active") }>
-                    <div className="summaryIcon"><img src={employee} alt="Employees" /></div>
-                    <div className="summaryDetail">
-                        <h3>Employees Head Count <span className="badge active">Active</span></h3>
-                        <p>{activeCount}</p> {/* Replace with actual data */}
-                    </div>
-                </div>
-            </a>
-            </div>
+            
             <div className="summaryCol">
                 <div className="summaryCard yellowCard" onClick={() => handleCardClick("date_of_joining", "this month")}>
                     <div className="summaryIcon"><img src={new_hire} alt=""/></div>
