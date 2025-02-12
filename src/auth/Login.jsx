@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // For password toggle icon
+import logo from "../assets/images/vprocure-logo.svg";
 
 // import "./Login.css"; // Import the CSS file
 
@@ -98,7 +100,8 @@ function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // Toggle state for password
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -109,41 +112,35 @@ function Login({ onLoginSuccess }) {
       return;
     }
 
-    setLoading(true); // Start loading
+    setLoading(true);
 
     try {
       const response = await fetch(`${URL}api/method/login`, {
         method: "POST",
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-        },
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({ usr: email, pwd: password }),
-        credentials: "include", // Necessary for handling cookies
+        credentials: "include",
       });
 
       if (response.ok) {
         const data = await response.json();
         console.log("Login successful:", data);
 
-        // Manually store the session ID from response (if not already set as a cookie)
-        const sessionId = data.sid || ""; // Adjust based on API response structure
+        const sessionId = data.sid || "";
         if (sessionId) {
           document.cookie = `sid=${sessionId}`;
         }
 
-        // Simulate 1.5 seconds delay for loading screen
         setTimeout(() => {
           onLoginSuccess({ email });
-          setLoading(false); // Stop loading after login success
+          setLoading(false);
         }, 1500);
-
       } else {
-        setLoading(false); // Stop loading on failure
+        setLoading(false);
         alert("Login failed. Please check your credentials.");
       }
     } catch (err) {
-      setLoading(false); // Stop loading on error
+      setLoading(false);
       setError(err.message);
     }
   };
@@ -151,13 +148,12 @@ function Login({ onLoginSuccess }) {
   return (
     <div className="login-container">
       <div className="login-form-container">
+        <img src={logo} alt="VProcure Logo" className="login-logo" />
         <h2 className="login-heading">Login</h2>
         {error && <p className="login-error">{error}</p>}
         <form onSubmit={handleLogin}>
           <div className="login-form-group">
-            <label htmlFor="email" className="login-label">
-              Email
-            </label>
+            <label htmlFor="email" className="login-label">Email</label>
             <input
               type="email"
               id="email"
@@ -166,15 +162,13 @@ function Login({ onLoginSuccess }) {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               required
-              disabled={loading} // Disable input while loading
+              disabled={loading}
             />
           </div>
-          <div className="login-form-group">
-            <label htmlFor="password" className="login-label">
-              Password
-            </label>
+          <div className="login-form-group password-wrapper">
+            <label htmlFor="password" className="login-label">Password</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               className="login-input"
               value={password}
@@ -182,23 +176,17 @@ function Login({ onLoginSuccess }) {
               placeholder="Enter your password"
               required
             />
+            <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
           </div>
-          <button
-            type="submit"
-            className="login-button"
-            disabled={loading} // Disable button while loading
-          >
-            {loading ? (
-              <span className="loading-spinner"></span> // Loading spinner
-            ) : (
-              "Login"
-            )}
+          <button type="submit" className="login-button" disabled={loading}>
+            {loading ? <span className="loading-spinner"></span> : "Login"}
           </button>
         </form>
       </div>
     </div>
   );
 }
-
 
 export default Login;

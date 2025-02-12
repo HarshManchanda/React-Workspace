@@ -134,10 +134,6 @@ function Sidebar({ onLogout, roles }) {
                     </li>
                 </ul>
             </nav>
-            <footer>
-                <p>© HM LTD</p>
-                <p><span>Powered By</span> HM LTD</p>
-            </footer>
         </aside>
     );
 }

@@ -99,7 +99,7 @@ function SearchAutocomplete() {
                     placeholder="Search Actions"
                     autoComplete="off"
                 />
-                <button><i className="fa-solid fa-magnifying-glass"></i></button>
+                {/* <button><i className="fa-solid fa-magnifying-glass"></i></button> */}
             </div>
 
             {showResults && results.length > 0 && (
@@ -114,7 +114,7 @@ function SearchAutocomplete() {
                 </div>
             )}
         </div>
-    );
+        );
 }
 
 export default SearchAutocomplete;

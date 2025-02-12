@@ -9,6 +9,7 @@ import ApiFetch from "./Components/ApiFetch";
 import Login from "./auth/Login";
 import React, { useState, useEffect } from "react";
 import Home from "./Components/Home";
+import ContentBox from "./Components/ContentBox";
 
 // function App(){
 //   return(
@@ -149,18 +150,19 @@ function App() {
         <div className="dashboardContainer">
           <Sidebar onLogout={handleLogout} roles={userRoles} />
           <main className="content">
-            <Header />
+            <Header onLogout={handleLogout} />
             <div className="innerContent">
-              <Home loggedInUser={loggedInUser} />
+              <ContentBox loggedInUser={loggedInUser} />
               {/* Conditionally render Birthdays and EmployeeChart for HR Users */}
-              {isHRUser && (
+              {/* {isHRUser && (
                 <section className="dashboardContent">
                   <Birthdays />
                   <EmployeeChart />
                 </section>
-              )}
+              )} */}
+
             </div>
-            <Footer />
+            {/* <Footer /> */}
           </main>
         </div>
       ) : (
