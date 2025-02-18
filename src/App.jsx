@@ -152,7 +152,7 @@ function App() {
           <main className="content">
             <Header onLogout={handleLogout} />
             <div className="innerContent">
-              <ContentBox loggedInUser={loggedInUser} />
+              <ContentBox loggedInUser={loggedInUser} onLogout={handleLogout} roles={userRoles} />
               {/* Conditionally render Birthdays and EmployeeChart for HR Users */}
               {/* {isHRUser && (
                 <section className="dashboardContent">

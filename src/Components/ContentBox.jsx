@@ -27,7 +27,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 
-function ContentBox({ loggedInUser }){
+function ContentBox({ loggedInUser, onLogout, roles }){
     const [employeeCount, setEmployeeCount] = useState(0);
     const [leavePending, setLeavePending] = useState(0);
     const [leaveApproved, setLeaveApproved] = useState(0);
@@ -111,7 +111,7 @@ function ContentBox({ loggedInUser }){
 
     return(
         <>
-            <MyFavourites/>
+            <MyFavourites onLogout={onLogout} roles={roles}/>
             <QuickAccess/>
             <Organization/>
         </>

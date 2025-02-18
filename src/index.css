@@ -214,7 +214,7 @@ nav.menu::-webkit-scrollbar-thumb {
     position: absolute;
     top: calc(100% + 10px); /* Position it below the headerRow with a small gap */
     left: 0;
-    width: 100%; /* Match the width of the headerRow */
+    width: 220%; /* Match the width of the headerRow */
     max-height: 300px;
     overflow-y: scroll;
     scrollbar-width: thin;
@@ -1027,6 +1027,24 @@ body .owl-carousel .owl-item img {
 }
 
 @media only screen and (max-width:1199px) {
+    .result-box {
+        position: absolute;
+        top: calc(100% + 10px); /* Position it below the headerRow with a small gap */
+        left: 0;
+        width: 100%; /* Match the width of the headerRow */
+        max-height: 300px;
+        overflow-y: scroll;
+        scrollbar-width: thin;
+        scrollbar-gutter: stable;
+        background: #fff;
+        z-index: 10;
+        border: solid 1px rgba(0, 0, 0, 0.1); /* Match the border of headerRow */
+        border-radius: 20px; /* Match the border radius of headerRow */
+        -webkit-box-shadow: 0 0 44px 0 rgba(0, 0, 0, 0.05); /* Match the shadow of headerRow */
+        box-shadow: 0 0 44px 0 rgba(0, 0, 0, 0.05); /* Match the shadow of headerRow */
+        padding: 10px 20px; /* Match the padding of headerRow */
+    }
+
     .dashboardContainer {
         -webkit-box-orient: vertical;
         -webkit-box-direction: normal;
@@ -1153,6 +1171,24 @@ body .owl-carousel .owl-item img {
 }
 
 @media only screen and (max-width:991px) {
+    .result-box {
+        position: absolute;
+        top: calc(100% + 10px); /* Position it below the headerRow with a small gap */
+        left: 0;
+        width: 100%; /* Match the width of the headerRow */
+        max-height: 300px;
+        overflow-y: scroll;
+        scrollbar-width: thin;
+        scrollbar-gutter: stable;
+        background: #fff;
+        z-index: 10;
+        border: solid 1px rgba(0, 0, 0, 0.1); /* Match the border of headerRow */
+        border-radius: 20px; /* Match the border radius of headerRow */
+        -webkit-box-shadow: 0 0 44px 0 rgba(0, 0, 0, 0.05); /* Match the shadow of headerRow */
+        box-shadow: 0 0 44px 0 rgba(0, 0, 0, 0.05); /* Match the shadow of headerRow */
+        padding: 10px 20px; /* Match the padding of headerRow */
+    }
+
     .summaryCol {
         width: calc(50% - 13.33px);
         ;
@@ -1188,6 +1224,24 @@ body .owl-carousel .owl-item img {
 
 
 @media only screen and (max-width:767px) {
+    .result-box {
+        position: absolute;
+        top: calc(100% + 10px); /* Position it below the headerRow with a small gap */
+        left: 0;
+        width: 100%; /* Match the width of the headerRow */
+        max-height: 300px;
+        overflow-y: scroll;
+        scrollbar-width: thin;
+        scrollbar-gutter: stable;
+        background: #fff;
+        z-index: 10;
+        border: solid 1px rgba(0, 0, 0, 0.1); /* Match the border of headerRow */
+        border-radius: 20px; /* Match the border radius of headerRow */
+        -webkit-box-shadow: 0 0 44px 0 rgba(0, 0, 0, 0.05); /* Match the shadow of headerRow */
+        box-shadow: 0 0 44px 0 rgba(0, 0, 0, 0.05); /* Match the shadow of headerRow */
+        padding: 10px 20px; /* Match the padding of headerRow */
+    }
+    
     .header {
         -webkit-box-orient: vertical;
         -webkit-box-direction: normal;
@@ -1357,10 +1411,95 @@ body .owl-carousel .owl-item img {
     padding: 0 10px; /* Adjust space between items */
 }
 
-.quickAccessCard {
+/* .quickAccessCard {
     border-radius: 10px;
     padding: 15px;
     background: white;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
+} */
+
+/* PLUS ICON ON MY FAVOURITE */
+
+.item {
+    position: relative; /* Required for absolute positioning inside */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    background: none;
+    border-radius: 8px;
+}
+
+.plusIcon {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10; /* Ensures visibility */
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.plusIcon img {
+    width: 20px;
+    height: 20px;
+    opacity: 0.8; /* Ensures visibility */
+    transition: opacity 0.2s ease-in-out;
+}
+
+.plusIcon:hover img {
+    opacity: 1;
+}
+
+/* END PLUS ICON */
+
+
+.avatar {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: #6c5ce7;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    position: relative;
+}
+
+.avatar:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -25px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.birthdayItem p{
+    font-size: 12px;
+}
+
+/* Slider Container */
+.quickAccessBirthdaySlider {
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* Individual Slide */
+.quickAccessBirthdaySlider .slick-slide {
+    display: flex !important; /* Ensure slides are flex containers */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    padding: 0 10px; /* Add padding between slides */
 }
